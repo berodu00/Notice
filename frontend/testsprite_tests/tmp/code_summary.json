@@ -1,0 +1,42 @@
+{
+    "tech_stack": [
+        "JavaScript",
+        "React",
+        "Vite",
+        "Axios",
+        "React Router"
+    ],
+    "features": [
+        {
+            "name": "Dashboard",
+            "description": "Main page displaying a list of notices in a grid layout. Shows title, status badge, date, and writer. Fetches data from backend on load.",
+            "files": [
+                "src/pages/Dashboard.jsx",
+                "src/api.js"
+            ]
+        },
+        {
+            "name": "Write Notice",
+            "description": "Form to create a new notice. Inputs for title, content, type, importance, recipients. Submits data to backend via POST /register.",
+            "files": [
+                "src/pages/WriteNotice.jsx",
+                "src/api.js"
+            ]
+        },
+        {
+            "name": "Notice Detail & Approval",
+            "description": "Displays detailed information of a specific notice. If status is PENDING, shows Approve/Reject buttons which call the backend API.",
+            "files": [
+                "src/pages/NoticeDetail.jsx",
+                "src/api.js"
+            ]
+        },
+        {
+            "name": "API Service",
+            "description": "Axios instance configuration and helper functions (getNotices, registerNotice, approveNotice) to interact with the backend.",
+            "files": [
+                "src/api.js"
+            ]
+        }
+    ]
+}

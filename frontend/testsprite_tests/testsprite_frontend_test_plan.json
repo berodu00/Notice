@@ -1,0 +1,399 @@
+[
+  {
+    "id": "TC001",
+    "title": "Create Notice with Valid Inputs",
+    "description": "Verify that a new notice can be successfully created when all required fields are provided with valid data and the notice is submitted for approval.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Write Notice page."
+      },
+      {
+        "type": "action",
+        "description": "Fill in the form with valid title, content, type, importance, recipients, and scheduled dispatch time."
+      },
+      {
+        "type": "action",
+        "description": "Submit the form."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the notice is saved with status PENDING and a confirmation message is displayed."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Notice Creation with Missing Required Fields",
+    "description": "Verify that the notice creation form enforces validation by not allowing submission when required fields are missing.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Write Notice page."
+      },
+      {
+        "type": "action",
+        "description": "Omit filling one or more required fields such as title or recipients."
+      },
+      {
+        "type": "action",
+        "description": "Attempt to submit the form."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the form prevents submission and displays appropriate validation error messages."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "View Notices in Dashboard with Correct Information",
+    "description": "Verify that the Dashboard correctly displays a list of notices with accurate titles, statuses, dates, writers, and statistics upon loading.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Dashboard page."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that notices are listed showing correct title, status badges, date, and writer information."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that statistical charts reflect accurate data from the notice records."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Manager Approves Pending Notice",
+    "description": "Verify that a manager with appropriate permissions can approve a notice that is in PENDING status.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as a manager with approval permissions."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to the Notice Detail & Approval page for a notice with PENDING status."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that Approve and Reject buttons are visible."
+      },
+      {
+        "type": "action",
+        "description": "Click the Approve button."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the notice status changes from PENDING to APPROVED and a success message is shown."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Manager Rejects Pending Notice",
+    "description": "Verify that a manager can reject a notice that is in PENDING status and the status updates appropriately.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as a manager with approval permissions."
+      },
+      {
+        "type": "action",
+        "description": "Open the Notice Detail & Approval page for a PENDING notice."
+      },
+      {
+        "type": "action",
+        "description": "Click the Reject button."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the notice status is updated to REJECTED and the user is notified."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Non-manager User Cannot See Approve or Reject Buttons",
+    "description": "Verify that users without manager role or approval permissions do not see approval controls on PENDING notices.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as a regular user without managerial approval permissions."
+      },
+      {
+        "type": "action",
+        "description": "Open the Notice Detail page for a notice with PENDING status."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the Approve and Reject buttons are not visible."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Approved Notice Creates Outlook Calendar Event",
+    "description": "Verify that upon approval of a notice, an event is registered in the Outlook 'IT Notice Schedule' calendar through MS Graph API.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Approve a notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the system calls MS Graph API to create a calendar event linked to the approved notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify in Outlook calendar that the event exists with correct title, scheduled time, and other details."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Multi-channel Notifications Are Dispatched on Approval",
+    "description": "Verify that after notice approval, notifications are sent correctly through all configured channels: email, company messenger (GW), portal, and KZ mobile app.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Approve a notice selecting all notification channels."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that an email notification is received by all recipients."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that a message is sent via company messenger (GW)."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that portal notifications appear for recipients."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that push notifications are received on the KZ mobile app."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Dashboard Reflects Correct Notice Counts and Statuses",
+    "description": "Verify that the Dashboard correctly updates and displays counts of notices segmented by approval and dispatch status after changes in notices.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Create, approve, reject, and dispatch notices to create varied states."
+      },
+      {
+        "type": "action",
+        "description": "Refresh or reload the Dashboard page."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that counts for pending, approved, rejected, dispatched, and completed notices are accurate and updated."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "History Log Captures Approval and Dispatch Events",
+    "description": "Verify that all approval actions and dispatch events are logged accurately and that logs can be searched and filtered by criteria such as user, date, and notice type.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Approve, reject, and dispatch multiple notices."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to the History page."
+      },
+      {
+        "type": "action",
+        "description": "Perform searches and apply filters on approval logs and dispatch history."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that relevant log entries appear correctly with accurate details."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Completion Notice Updates Outlook Calendar and Notifies Recipients",
+    "description": "Verify that registering a completion notice updates the corresponding Outlook calendar event visually and sends notifications to all relevant recipients.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Register a completion notice for an approved and dispatched notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the Outlook event’s visual state is updated accordingly."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that notifications about completion are sent through all relevant channels."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Responsive UI Displays Properly on Mobile and Desktop Devices",
+    "description": "Verify that the web interface layout and elements render correctly and remain functional on different screen sizes and device types including desktop and mobile browsers.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the application in desktop web browsers of various resolutions."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all pages (Dashboard, Write Notice, Notice Detail & Approval, History) render without layout issues and all UI elements are accessible."
+      },
+      {
+        "type": "action",
+        "description": "Open the application on mobile devices or emulators with varying dimensions."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that responsive UI adapts properly with no content overflow or usability impairments."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "User Access via SSO Without Separate Login",
+    "description": "Verify that users accessing the system through SSO gain entry without requiring a separate login and that permission enforcement works to restrict notice approval controls to authorized users only.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Access the system with SSO credentials."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user accesses the dashboard directly without an additional login prompt."
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access approval functionality based on user’s role."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that approval controls are visible only to manager users and other users do not have access."
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Notice Filtering by Type, Service, Department, Recipients, and Hashtag",
+    "description": "Verify that filtering notices on the Dashboard and History pages by notice type, affected service, sender department, recipient, and hashtags works correctly to narrow the displayed results.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Dashboard page."
+      },
+      {
+        "type": "action",
+        "description": "Select filters for notice type, affected service, sender department, recipients, and hashtags individually and in combination."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the listed notices update accordingly and only matching results are displayed."
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Scheduled Dispatch Executes at Correct Time",
+    "description": "Verify that notices scheduled for future dispatch are sent out at the specified scheduled time and not before.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Create and approve a notice with a scheduled dispatch time set in the near future."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that notification channels do not dispatch before the scheduled time."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that dispatch occurs promptly at the scheduled time."
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Invalid MS Graph API Responses Handled Gracefully",
+    "description": "Verify that if the external Outlook calendar event registration via MS Graph API fails or returns errors, the system handles these gracefully by notifying the user/admin and retrying or logging the error.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate MS Graph API failure during calendar event creation."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the system displays an error message or logs the failure appropriately."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the notice remains in an appropriate state allowing retry or manual intervention."
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Notice Detail Page Shows Accurate Information",
+    "description": "Verify that the Notice Detail page shows all notice details correctly, including status, writer, date, approval logs, and dispatch history.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Notice Detail page for a given notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all fields like title, content, type, importance, recipients, scheduled dispatch time, and status are displayed accurately."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that approval logs and dispatch history related to the notice are visible and complete."
+      }
+    ]
+  }
+]

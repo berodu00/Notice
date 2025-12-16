@@ -1,0 +1,22 @@
+[
+  {
+    "id": "TC001",
+    "title": "register_new_notice_with_valid_data",
+    "description": "Test the /api/notices/register POST endpoint to ensure a new notice can be registered successfully with all mandatory fields including title, content, notice type, importance, writerId, recipients, and schedule. Verify the response returns the new notice ID and the notice status is set to PENDING."
+  },
+  {
+    "id": "TC002",
+    "title": "approve_pending_notice_and_invoke_ms_graph_api",
+    "description": "Test the /api/notices/{noticeId}/approve POST endpoint to approve a notice with PENDING status. Verify that the notice status updates to APPROVED, approval action is logged, and the MS Graph API stub is called to register the notice event in the Outlook IT Notice Schedule calendar."
+  },
+  {
+    "id": "TC003",
+    "title": "reject_pending_notice_and_log_approval_action",
+    "description": "Test the /api/notices/{noticeId}/approve POST endpoint to reject a notice with PENDING status. Verify that the notice status updates accordingly, the rejection is logged with comments, and no MS Graph API call is made."
+  },
+  {
+    "id": "TC004",
+    "title": "get_all_notices_list",
+    "description": "Test the /api/notices GET endpoint to retrieve the list of all notices. Verify the response contains an array of notices with correct fields such as id, title, and status."
+  }
+]

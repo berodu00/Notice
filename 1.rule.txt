@@ -1,0 +1,29 @@
+Vibe Coding Project
+
+# 나는 비개발자로서 유사한 프로젝트 개발 경험이 없으며, 순수한 바이브 코딩으로 이 프로젝트를 수행하고자 함
+
+# 로컬 PC에서 개발 실연 가능하도록 구축
+
+# PC 퍼스트 + 모바일 반응형
+
+# 요구사항이 불명확하거나 개발 단계에서 임의로 지정해야 하는 요소가 있는 경우, 나에게 이를 알린 후 적절한 판단으로 처리함
+
+# 기술 스택
+## JAVA - Spring Boot - Gradle -  PostgreSQL
+
+# Main Developer: Gemini 3 Pro + Google AntiGravity (코드 생성, 디버깅, 무한 구현).
+
+# Smart PM: NotebookLM (기획서/스키마 학습, 스펙 검증, 오디오 브리핑 생성).
+
+# Evidence Tool: OBS Studio (화면 녹화/타임랩스), Git (AI 태그 커밋 로그).
+
+# 동호회 관리 시스템
+
+# 전자 사보 시스템
+
+# 특허 관리 시스템
+
+# 공지 관리 시스템
+
+# 동호회 관리 시스템
+

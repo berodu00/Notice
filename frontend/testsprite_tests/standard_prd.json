@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "project": "IT Notice Management System",
+    "date": "2025-12-10",
+    "prepared_by": "Gemini (AI Assistant)"
+  },
+  "product_overview": "A web-based IT notice management system designed to streamline notice registration, approval, and dispatch processes with integrated Outlook calendar synchronization using MS Graph API. It supports multi-channel notifications and enhances user accessibility without separate login.",
+  "core_goals": [
+    "Automate IT notice registration and approval workflow via a web platform",
+    "Seamless integration with Outlook using MS Graph API for calendar event synchronization",
+    "Expand notification channels beyond email, including company messenger, portal, and mobile app",
+    "Provide a dashboard for monitoring notice statuses, statistics, and history",
+    "Enhance user convenience by offering SSO-based access and responsive UI across devices",
+    "Support state management of notices including completion status and linked notice flows"
+  ],
+  "key_features": [
+    "Dashboard displaying notices with status badges, dates, writers, and statistical charts",
+    "Notice writing form with inputs for title, content, type, importance, recipients, and scheduled dispatch time",
+    "Approval workflow where managers can approve or reject pending notices",
+    "Automated Outlook calendar event registration linked to approved notices",
+    "Multi-channel alerting system supporting email, company messenger (GW), portal, and KZ mobile app with standard API integration",
+    "Completion notice registration feature that visually updates schedule states in Outlook",
+    "Notice history and approval log tracking with search and filter capabilities",
+    "Responsive design optimized for desktop and mobile webviews",
+    "Notice type, affected service, sender department, recipient filters, and hashtag tagging for statistical tracking"
+  ],
+  "user_flow_summary": [
+    "User accesses Dashboard to view list of notices with statuses",
+    "Admin writes a new notice using the Notice Write form, specifying details and either immediate or scheduled dispatch",
+    "Notice enters PENDING status awaiting manager approval",
+    "Manager reviews notice details and approves or rejects via Notice Detail & Approval page",
+    "Upon approval, system registers event in Outlook 'IT Notice Schedule' resource calendar and dispatches emails and other channel notifications",
+    "User or admin can track dispatch history and status via History and Dashboard",
+    "For system maintenance or incident, completion notice can be registered to update status visually in calendar and notify recipients accordingly"
+  ],
+  "validation_criteria": [
+    "Notices can be created with valid required fields and submitted for approval",
+    "Only notices with PENDING status show approval options to authorized managers",
+    "Approved notices successfully create events in the dedicated Outlook calendar resource",
+    "Dispatch emails and multi-channel notifications are sent based on selected channels",
+    "Dashboard correctly reflects counts of notices by approval and dispatch status",
+    "History logs capture all approval and dispatch events accurately and can be filtered",
+    "Completion notices update the calendar event's visual state and send appropriate notifications",
+    "Responsive UI renders properly on mobile and desktop webviews without layout breaks",
+    "User access via SSO does not require separate login and permissions are enforced for notice approval"
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "JavaScript",
+      "React",
+      "Vite",
+      "Axios",
+      "React Router"
+    ],
+    "features": [
+      {
+        "name": "Dashboard",
+        "description": "Main page displaying a list of notices in a grid layout. Shows title, status badge, date, and writer. Fetches data from backend on load.",
+        "files": [
+          "src/pages/Dashboard.jsx",
+          "src/api.js"
+        ]
+      },
+      {
+        "name": "Write Notice",
+        "description": "Form to create a new notice. Inputs for title, content, type, importance, recipients. Submits data to backend via POST /register.",
+        "files": [
+          "src/pages/WriteNotice.jsx",
+          "src/api.js"
+        ]
+      },
+      {
+        "name": "Notice Detail & Approval",
+        "description": "Displays detailed information of a specific notice. If status is PENDING, shows Approve/Reject buttons which call the backend API.",
+        "files": [
+          "src/pages/NoticeDetail.jsx",
+          "src/api.js"
+        ]
+      },
+      {
+        "name": "API Service",
+        "description": "Axios instance configuration and helper functions (getNotices, registerNotice, approveNotice) to interact with the backend.",
+        "files": [
+          "src/api.js"
+        ]
+      }
+    ]
+  }
+}

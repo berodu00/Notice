@@ -1,0 +1,431 @@
+[
+  {
+    "id": "TC001",
+    "title": "Register Notice with All Mandatory Fields",
+    "description": "Verify that a new notice can be registered successfully when all mandatory fields (title, content, notice type, importance, writer ID, and recipients) are provided, and status is PENDING.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send a POST request to /api/notices/register with valid title, content, noticeType, importance, writerId, recipients, startTime, endTime, and isRegularSend flag."
+      },
+      {
+        "type": "assertion",
+        "description": "Response status is 200 and the response body returns a valid notice ID."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify in the database that the newly created notice has status set to PENDING."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Register Notice Missing Mandatory Fields",
+    "description": "Verify that the system returns validation errors when one or more mandatory fields are missing during notice registration.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /api/notices/register with missing title."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating title is required."
+      },
+      {
+        "type": "action",
+        "description": "Send POST request to /api/notices/register with missing content."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating content is required."
+      },
+      {
+        "type": "action",
+        "description": "Send POST request to /api/notices/register with missing noticeType."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating noticeType is required."
+      },
+      {
+        "type": "action",
+        "description": "Send POST request to /api/notices/register with missing importance."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating importance is required."
+      },
+      {
+        "type": "action",
+        "description": "Send POST request to /api/notices/register with missing writerId."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating writerId is required."
+      },
+      {
+        "type": "action",
+        "description": "Send POST request to /api/notices/register with missing recipients."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating recipients are required."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Approve PENDING Notice Successfully",
+    "description": "Verify that a PENDING notice can be approved successfully by the designated manager, status changes to APPROVED, approval action is logged, and MS Graph API is called to create an Outlook calendar event.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Create a notice with status PENDING."
+      },
+      {
+        "type": "action",
+        "description": "Send a POST request to /api/notices/{noticeId}/approve with approved=true, valid approverId, and optional comments."
+      },
+      {
+        "type": "assertion",
+        "description": "Response status is 200 indicating successful processing."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that notice status is updated to APPROVED in the database."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that an approval log entry is created with approverId, approval status, and comments."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that MS Graph API stub is called to register the calendar event for the approved notice."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Reject PENDING Notice",
+    "description": "Verify that a PENDING notice can be rejected, status changes appropriately, and approval log records rejection with comments.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Create a notice with status PENDING."
+      },
+      {
+        "type": "action",
+        "description": "Send a POST request to /api/notices/{noticeId}/approve with approved=false, valid approverId, and rejection comments."
+      },
+      {
+        "type": "assertion",
+        "description": "Response status is 200 indicating successful processing."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that notice status is updated to REJECTED or appropriate rejection status."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify approval log entry records rejection with approver ID and comments."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no MS Graph API call is made upon rejection."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Approve Non-PENDING Notice Fails",
+    "description": "Verify that approval or rejection is disallowed for notices not in PENDING status and appropriate error is returned.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to approve a notice already APPROVED."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating notice is not in PENDING status."
+      },
+      {
+        "type": "action",
+        "description": "Attempt to reject a notice already REJECTED."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating notice is not in PENDING status."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Get All Notices",
+    "description": "Verify API returns the list of all notices including their IDs, titles, and status correctly.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /api/notices."
+      },
+      {
+        "type": "assertion",
+        "description": "Response status is 200."
+      },
+      {
+        "type": "assertion",
+        "description": "Response body includes an array of notices with necessary fields such as id, title, and status."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Scheduled Regular Sends Aggregate Notices Correctly",
+    "description": "Verify that notices scheduled with regular sends (morning 08:30 and afternoon 17:30) are aggregated into a single batch email dispatch per schedule time.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Register multiple notices with isRegularSend=true and the same scheduled send time (e.g., 08:30)."
+      },
+      {
+        "type": "action",
+        "description": "Trigger the scheduled batch send process."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that a single email is dispatched containing all the notices for that schedule time."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Immediate Send Dispatches Notice Immediately",
+    "description": "Verify that a notice marked for immediate send is dispatched to all configured channels immediately after approval.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Register a notice with isRegularSend=false and immediate send flag."
+      },
+      {
+        "type": "action",
+        "description": "Approve the notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the notice is dispatched immediately via email, corporate messenger, portal, and mobile app channels."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Multi-Channel Notification Delivery",
+    "description": "Verify that notices are correctly sent to configured channels: email, corporate messenger, group portal, and mobile app alert.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Approve a notice configured with recipients for email, messenger, portal, and mobile app."
+      },
+      {
+        "type": "assertion",
+        "description": "Check logs and endpoints to confirm delivery success on all specified channels."
+      },
+      {
+        "type": "assertion",
+        "description": "Simulate failure on one channel and verify system logs failure, continues sending on other channels, and reports the failure correctly."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Completion Notice Updates Calendar Event Visually",
+    "description": "Verify that registering a completion notice for an existing approved notice updates the corresponding Outlook calendar event visually to indicate completion without resending emails.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Register a completion notice linked to an existing approved notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the calendar event is updated to a completed visual status."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that no new email or multi-channel notification is sent for the completion."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Dashboard Statistics Accuracy",
+    "description": "Verify that the approval waiting, scheduled, sent, failed, and completed notices counts and graphical summaries by notice type and department on the dashboard reflect real-time data correctly.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Create multiple notices with different statuses and types in various departments."
+      },
+      {
+        "type": "action",
+        "description": "Access the admin dashboard."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the counts of notices by approval status are correct."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify graphical summaries correctly represent notice types and department distribution."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "User Interface SSO Access and Responsive Calendar View",
+    "description": "Verify that general users can access the system with SSO without separate login and see a responsive calendar timeline view with ongoing and completed notices distinctly colored.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Log in as a general user using SSO."
+      },
+      {
+        "type": "assertion",
+        "description": "User is granted seamless access without additional login prompts."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to notice dashboard page."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify calendar timeline view is displayed and responsive across screen sizes."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify notices are shown with distinct visual color coding for ongoing and completed statuses."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Approval and Sending Action Logging for Traceability",
+    "description": "Verify that all approval and notification sending actions are logged with sufficient detail for audit and traceability, including timestamps, user IDs, notice IDs, status changes, and error messages if any.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Approve a notice."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify approval log entry includes approver ID, timestamp, notice ID, approval status, and comments."
+      },
+      {
+        "type": "action",
+        "description": "Send a notice out via multi-channel dispatch."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify sending logs capture recipient lists, channels used, timestamps, and success or failure status."
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Handle API Failure to Create Outlook Event",
+    "description": "Verify system behavior when the MS Graph API stub fails or returns error during event creation for an approved notice.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate MS Graph API failure during approval of a notice."
+      },
+      {
+        "type": "action",
+        "description": "Approve the notice."
+      },
+      {
+        "type": "assertion",
+        "description": "System gracefully handles the failure, logs the error, does not mark notice as fully completed if event creation failed."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the notice status remains consistent and retry mechanism or alerting is triggered per system design."
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Security: Ensure Only Assigned Managers Can Approve Notices",
+    "description": "Verify that only managers assigned to the originating department of a notice can perform its approval or rejection.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to approve a PENDING notice by a user not assigned as the manager of the notice's originating department."
+      },
+      {
+        "type": "assertion",
+        "description": "System denies approval action with an authorization error."
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Edge Case: Register Notice With StartTime Later Than EndTime",
+    "description": "Verify that the registration fails or returns validation error when the notice's startTime is after the endTime.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST /api/notices/register with startTime set later than endTime."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns validation error indicating invalid time range."
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Edge Case: Register Notice with Empty Recipients",
+    "description": "Verify that the system rejects notices with empty or invalid recipient fields during registration.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST /api/notices/register with recipients field empty or invalid format."
+      },
+      {
+        "type": "assertion",
+        "description": "Response returns error indicating recipients must be provided and valid."
+      }
+    ]
+  }
+]

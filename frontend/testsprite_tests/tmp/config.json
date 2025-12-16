@@ -1,0 +1,16 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "executionArgs": {
+    "projectName": "frontend",
+    "projectPath": "d:/berodu/SORIN/project/Notice/frontend",
+    "testIds": [],
+    "additionalInstruction": "Re-run the tests after fixing the API trailing slash bug. ensure raw_report.md is regenerated.",
+    "envs": {
+      "API_KEY": "sk-user--O9Nu1wfG6lYUWiau6jWqz37OZgU5l3f0zk13DGiqJlh0kFf8jrKAWLXXx1gNUSekOWOL0Idsy1GshngOfXZQkIY5bUibB5y6bpBiLe3pftC40OqUodu0dGItVynCFY3l8U"
+    }
+  },
+  "proxy": "http://0e75c83e-6325-4452-b28c-89777075b240:UjqWSZpS27tQgTg6Wts8jaoj7HTTvb3d@tun.testsprite.com:8080"
+}
