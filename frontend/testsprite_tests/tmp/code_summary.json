@@ -1,39 +1,68 @@
 {
     "tech_stack": [
-        "JavaScript",
-        "React",
-        "Vite",
-        "Axios",
-        "React Router"
+        "javascript",
+        "react",
+        "vite",
+        "recharts",
+        "react-big-calendar",
+        "lucide-react"
     ],
     "features": [
         {
+            "name": "Layout & Navigation",
+            "description": "Persistent Sidebar navigation with Korean labels and active state highlighting.",
+            "files": [
+                "src/components/Layout.jsx",
+                "src/App.css"
+            ]
+        },
+        {
             "name": "Dashboard",
-            "description": "Main page displaying a list of notices in a grid layout. Shows title, status badge, date, and writer. Fetches data from backend on load.",
+            "description": "Main landing page with Summary Cards, Flattened Calendar, Maintenance List, Recent Notices, and Charts (Pie/Bar).",
             "files": [
                 "src/pages/Dashboard.jsx",
-                "src/api.js"
+                "src/App.css"
             ]
         },
         {
             "name": "Write Notice",
-            "description": "Form to create a new notice. Inputs for title, content, type, importance, recipients. Submits data to backend via POST /register.",
+            "description": "Table-style form for creating new notices with title, type, importance, writer, schedule, and content.",
             "files": [
                 "src/pages/WriteNotice.jsx",
-                "src/api.js"
+                "src/App.css"
             ]
         },
         {
-            "name": "Notice Detail & Approval",
-            "description": "Displays detailed information of a specific notice. If status is PENDING, shows Approve/Reject buttons which call the backend API.",
+            "name": "Notice History",
+            "description": "List view of all notices with sorting.",
             "files": [
-                "src/pages/NoticeDetail.jsx",
-                "src/api.js"
+                "src/pages/NoticeHistory.jsx"
+            ]
+        },
+        {
+            "name": "Notice Approval",
+            "description": "List view of PENDING notices with quick approval capability.",
+            "files": [
+                "src/pages/NoticeApproval.jsx"
+            ]
+        },
+        {
+            "name": "Notice Detail",
+            "description": "Detailed view of a single notice.",
+            "files": [
+                "src/pages/NoticeDetail.jsx"
+            ]
+        },
+        {
+            "name": "Calendar View",
+            "description": "Standalone monthly calendar view of notice schedules.",
+            "files": [
+                "src/pages/CalendarView.jsx"
             ]
         },
         {
             "name": "API Service",
-            "description": "Axios instance configuration and helper functions (getNotices, registerNotice, approveNotice) to interact with the backend.",
+            "description": "Axios-based API calls to backend.",
             "files": [
                 "src/api.js"
             ]

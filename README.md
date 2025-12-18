@@ -1,50 +1,134 @@
-# IT 공지 관리 시스템 (IT Notice Management System)
+# 📢 Notice Management System (IT 공지 관리 시스템)
 
-## 📌 프로젝트 개요
-기존 이메일 기반의 비효율적인 IT 공지 업무를 개선하기 위한 **웹 기반 IT 공지 통합 관리 시스템**입니다.
-Outlook 일정(MS Graph API)과 연동하여 공지 등록 시 자동으로 캘린더에 반영되며, 메일/메신저/포털 등 다양한 채널로 알림을 발송합니다.
+> **Enterprise-grade Notice Management System leveraging Spring Boot 3 and React (Vite).**  
+> Designed for seamless integration with MS Graph API (Outlook) and multi-channel notifications.
 
-## 🚀 핵심 기능
-* **공지 업무 시스템화**: 웹 인터페이스를 통한 공지 등록, 결재(승인/반려), 통합 조회 기능.
-* **Outlook 자동 연동**: 승인된 공지는 MS Graph API를 통해 Outlook 'IT 공지일정' 캘린더에 자동 등록.
-* **통합 알림**: 이메일, 사내 메신저, 포털, 모바일 앱 등 다채널 알림 지원.
-* **사용자 편의성**: SSO 연동을 통한 로그인 없는 접근, 직관적인 대시보드 및 타임라인 뷰 제공.
+![Project Status](https://img.shields.io/badge/Status-Development-blue)
+![Backend](https://img.shields.io/badge/Backend-Spring%20Boot%203.2-green)
+![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61DAFB)
+![Database](https://img.shields.io/badge/Database-PostgreSQL-336791)
 
-## 🛠 기술 스택 (Tech Stack)
+---
+
+## 📖 Overview
+
+The **Notice Management System** is a robust web application designed to modernize corporate IT announcements. It replaces traditional, fragmented email threads with a centralized, tracked, and approved announcement workflow.
+
+### Key Objectives
+*   **Systematized Workflow**: Transitions from manual emails to a strict Draft -> Approval -> Dispatch lifecycle.
+*   **Outlook Integration**: Automatically books "IT Maintenance" events on corporate calendars via **MS Graph API** (Stubbed/Ready for integration).
+*   **Response & Visibility**: Provides real-time status updates (Draft, Pending, Approved, Completed) and prioritized visibility.
+
+---
+
+## 🚀 Features
+
+### 1. Notice Lifecycle Management
+*   **Create**: Admin/Managers can create notices with rich details (Title, Content, Severity, Affected Service, Target Audience).
+*   **Approval Workflow**: Mandatory approval process. Managers can **Approve** (triggers dispatch) or **Reject** (returns to draft) notices.
+*   **Status Tracking**: Real-time status badges (`PENDING`, `APPROVED`, `REJECTED`, `COMPLETED`).
+
+### 2. Modern User Interface
+*   **Dashboard**: Card-based grid view of all active notices.
+*   **Responsive Design**: Built with React and optimized for Desktop and Mobile web views.
+*   **Premium Aesthetics**: Modern UI with hover effects, glassmorphism elements, and clear typographic hierarchy.
+
+### 3. Backend Architecture
+*   **REST API**: Fully documented REST endpoints for notice management.
+*   **Transactional Integrity**: ACID compliancy for all state changes using Spring `@Transactional`.
+*   **Scalable Schema**: Normalized PostgreSQL database design separated into Master, Schedule, and Approval Logs.
+
+---
+
+## 🛠 Tech Stack
 
 ### Backend
-* **Language**: Java
-* **Framework**: Spring Boot
-* **Database**: PostgreSQL
-* **API**: MS Graph API (Outlook Calendar & Mail)
+*   **Language**: Java 17
+*   **Framework**: Spring Boot 3.2.0
+*   **Build Tool**: Gradle
+*   **Database**: PostgreSQL
+*   **ORM**: Spring Data JPA (Hibernate)
+*   **Library**: Lombok, Validation
 
 ### Frontend
-* **Framework**: React (Vite)
-* **Styling**: CSS Modules / Vanilla CSS
-* **Build Tool**: npm / yarn
+*   **Framework**: React 18
+*   **Build Tool**: Vite
+*   **Styling**: Vanilla CSS (Modular & Global)
+*   **Routing**: React Router DOM 6
+*   **HTTP Client**: Axios
+*   **Icons**: Lucide React
 
-## 📂 프로젝트 구조
-```
-d:\berodu\SORIN\project\Notice
-├── src/main/java       # Spring Boot Backend Source
-├── frontend/           # React Frontend Source
-├── db/                 # Database Scripts
-└── ...
-```
+---
 
-## ⚙️ 설치 및 실행 (Setup)
+## 📂 Project Structure
 
-### Backend (Spring Boot)
 ```bash
+notice-system/
+├── src/main/java/com/sorin/notice/  # Spring Boot Backend
+│   ├── controller/                  # REST Controllers
+│   ├── domain/                      # JPA Entities & Enums
+│   ├── repository/                  # Data Access Layer
+│   └── service/                     # Business Logic
+├── frontend/                        # React Frontend
+│   ├── src/
+│   │   ├── pages/                   # Dashboard, Write, Detail
+│   │   ├── components/              # (Future use)
+│   │   └── api.js                   # Axios setup
+│   └── public/
+└── db/                              # Database Scripts (Schema)
+```
+
+---
+
+## ⚡ Getting Started
+
+### Prerequisites
+*   Java 17+ (JDK)
+*   Node.js 18+ & npm
+*   PostgreSQL Database (`noticedb`)
+
+### Installation & Run
+
+#### 1. Database Setup
+Create a PostgreSQL database named `noticedb`. The application is configured to automatically update the schema (`ddl-auto=update`), but you can manually apply `db/schema.sql` if preferred.
+
+#### 2. Backend (Spring Boot)
+```bash
+# Windows
+./gradlew bootRun
+
+# Linux/Mac
 ./gradlew bootRun
 ```
+*   Server runs on: `http://localhost:8080`
 
-### Frontend (React)
+#### 3. Frontend (React)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+*   Client runs on: `http://localhost:5173`
 
-## 📝 라이선스
-This project is private.
+---
+
+## 📝 API Reference
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/notices` | Retrieve all notices |
+| `POST` | `/api/notices/register` | Create a new notice |
+| `POST` | `/api/notices/{id}/approve` | Approve/Reject a notice |
+
+---
+
+## 🔮 Future Roadmap (Phase 2)
+
+*   [ ] **MS Graph Production Integration**: Replace `MSGraphServiceStub` with real Azure AD authentication and Graph API calls.
+*   [ ] **Batch Scheduling**: Implement `@Scheduled` tasks to batch send emails at 08:30 / 17:30.
+*   [ ] **Calendar View**: Add a full-calendar view to the frontend dashboard.
+*   [ ] **SSO Integration**: Integrate corporate Single Sign-On.
+
+---
+
+**Developed for Sorin Co. Project**

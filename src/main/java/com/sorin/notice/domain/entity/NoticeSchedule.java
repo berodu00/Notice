@@ -21,6 +21,7 @@ public class NoticeSchedule {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonBackReference
     private NoticeMaster noticeMaster;
 
     @Column(name = "start_time")

@@ -45,6 +45,10 @@ public class NoticeMaster {
     @Column(nullable = false)
     private NoticeStatus status;
 
+    @OneToOne(mappedBy = "noticeMaster", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @com.fasterxml.jackson.annotation.JsonManagedReference
+    private NoticeSchedule schedule;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

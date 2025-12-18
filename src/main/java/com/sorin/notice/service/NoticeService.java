@@ -55,6 +55,10 @@ public class NoticeService {
                 request.getStartTime(),
                 request.getEndTime(),
                 request.isRegularSend());
+
+        // Ensure bidirectional link in memory (optional but good practice)
+        savedNotice.setSchedule(schedule);
+
         noticeScheduleRepository.save(schedule);
 
         return savedNotice.getId();
